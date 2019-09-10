@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Task;
 use AppBundle\Entity\User;
 use AppBundle\Form\TaskType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,11 +18,22 @@ class TaskController extends Controller
      */
     public function listAction()
     {
-        return $this->render('task/list.html.twig', ['tasks' => $this->getDoctrine()->getRepository('AppBundle:Task')->findAll()]);
+        return $this->render('task/list.html.twig', ['tasks' => $this->getDoctrine()->getRepository('AppBundle:Task')
+            ->findBy(['isDone' => false])]);
+    }
+
+    /**
+     * @Route("/tasks/complete", name="task_list_done")
+     */
+    public function listActionDone()
+    {
+        return $this->render('task/list.html.twig', ['tasks' => $this->getDoctrine()->getRepository('AppBundle:Task')
+            ->findBy(['isDone' => true])]);
     }
 
     /**
      * @Route("/tasks/create", name="task_create")
+     * @IsGranted({"ROLE_ADMIN","ROLE_USER"})
      */
     public function createAction(Request $request)
     {
@@ -32,7 +44,12 @@ class TaskController extends Controller
 
         if ($form->isSubmitted()) {
             $em = $this->getDoctrine()->getManager();
-            $task->setUser($this->getUser());
+            if ($this->getUser()) {
+                $task->setUser($this->getUser());
+            }
+            else{
+                $task->setUser(null);
+            }
             $em->persist($task);
             $em->flush();
 
@@ -46,12 +63,14 @@ class TaskController extends Controller
 
     /**
      * @Route("/tasks/{id}/edit", name="task_edit")
+     * @IsGranted({"ROLE_ADMIN","ROLE_USER"})
      */
     public function editAction(Task $task, Request $request)
     {
         $form = $this->createForm(TaskType::class, $task);
 
         $form->handleRequest($request);
+        if ($task->getUser() === $this->getUser()) {
 
         if ($form->isSubmitted()) {
             $this->getDoctrine()->getManager()->flush();
@@ -60,11 +79,20 @@ class TaskController extends Controller
 
             return $this->redirectToRoute('task_list');
         }
+        }
+        else
+        {
+            $this->addFlash('error', 'Vous ne pouvez pas modifier une tâche qui n\'est pas a vous.');
+            return $this->redirectToRoute('homepage');
+
+        }
+
 
         return $this->render('task/edit.html.twig', [
             'form' => $form->createView(),
             'task' => $task,
         ]);
+
     }
 
     /**
@@ -72,16 +100,23 @@ class TaskController extends Controller
      */
     public function toggleTaskAction(Task $task)
     {
-        $task->toggle(!$task->isDone());
-        $this->getDoctrine()->getManager()->flush();
-
-        $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme faite.', $task->getTitle()));
-
-        return $this->redirectToRoute('task_list');
+        if ($task->isDone() === true) {
+            $task->toggle(!$task->isDone());
+            $this->getDoctrine()->getManager()->flush();
+            $this->addFlash('successDone', sprintf('La tâche %s a bien été marquée comme non terminé.', $task->getTitle
+            ()));
+            return $this->redirectToRoute('task_list');
+        }else{
+            $task->toggle(!$task->isDone());
+            $this->getDoctrine()->getManager()->flush();
+            $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme faite.', $task->getTitle()));
+            return $this->redirectToRoute('task_list');
+        }
     }
 
     /**
      * @Route("/tasks/{id}/delete", name="task_delete")
+     * @IsGranted({"ROLE_ADMIN","ROLE_USER"})
      */
     public function deleteTaskAction(Task $task)
     {
@@ -92,10 +127,12 @@ class TaskController extends Controller
 
             $this->addFlash('success', 'La tâche a bien été supprimée.');
 
-            return $this->redirectToRoute('task_list');
+            return $this->redirectToRoute('homepage');
         }
+        else{
 
-        return $this->redirectToRoute('task_list');
-
+            $this->addFlash('error', 'Vous ne pouvez pas supprimer une tâche qui n\'est pas a vous');
+            return $this->redirectToRoute('homepage');
+        }
     }
 }

@@ -43,7 +43,7 @@ class Task
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="task")
      * @ORM\OrderBy({"order" = "DESC", "id" = "DESC"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $users;
 
