@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
 use AppBundle\Form\UserType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,6 +13,7 @@ class UserController extends Controller
 {
     /**
      * @Route("/users", name="user_list")
+     * @IsGranted({"ROLE_ADMIN"})
      */
     public function listAction()
     {
@@ -46,6 +48,7 @@ class UserController extends Controller
 
     /**
      * @Route("/users/{id}/edit", name="user_edit")
+     * @IsGranted({"ROLE_ADMIN"})
      */
     public function editAction(User $user, Request $request)
     {
