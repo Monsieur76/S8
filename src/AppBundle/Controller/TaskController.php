@@ -33,31 +33,27 @@ class TaskController extends Controller
 
     /**
      * @Route("/tasks/create", name="task_create")
-     * @IsGranted({"ROLE_ADMIN","ROLE_USER"})
      */
     public function createAction(Request $request)
     {
         $task = new Task();
-        $form = $this->createForm(TaskType::class, $task);
-
+        $user = null;
+        if ($this->getUser()) {
+            $user = $this->getUser()->getRoles();
+        }
+        $form = $this->createForm(TaskType::class, $task,['attr'=>['creat',$user[0]]]);
         $form->handleRequest($request);
-
         if ($form->isSubmitted()) {
             $em = $this->getDoctrine()->getManager();
-            if ($this->getUser()) {
-                $task->setUser($this->getUser());
-            }
-            else{
-                $task->setUser(null);
+            $task->setUser($this->getUser());
+            if ($this->getUser() === null){
+                $task->setAuthor('Anonyme');
             }
             $em->persist($task);
             $em->flush();
-
             $this->addFlash('success', 'La tâche a été bien été ajoutée.');
-
             return $this->redirectToRoute('task_list');
         }
-
         return $this->render('task/create.html.twig', ['form' => $form->createView()]);
     }
 
@@ -67,27 +63,15 @@ class TaskController extends Controller
      */
     public function editAction(Task $task, Request $request)
     {
-        $form = $this->createForm(TaskType::class, $task);
-
+        $this->denyAccessUnlessGranted('EDIT',$task);
+        $user = $this->getUser()->getRoles();
+        $form = $this->createForm(TaskType::class, $task,['attr'=>['edit',$user[0]]]);
         $form->handleRequest($request);
-        if ($task->getUser() === $this->getUser()) {
-
         if ($form->isSubmitted()) {
             $this->getDoctrine()->getManager()->flush();
-
             $this->addFlash('success', 'La tâche a bien été modifiée.');
-
             return $this->redirectToRoute('task_list');
         }
-        }
-        else
-        {
-            $this->addFlash('error', 'Vous ne pouvez pas modifier une tâche qui n\'est pas a vous.');
-            return $this->redirectToRoute('homepage');
-
-        }
-
-
         return $this->render('task/edit.html.twig', [
             'form' => $form->createView(),
             'task' => $task,
@@ -120,19 +104,12 @@ class TaskController extends Controller
      */
     public function deleteTaskAction(Task $task)
     {
-        if ($task->getUser() === $this->getUser()) {
+        $this->denyAccessUnlessGranted('DELETE',$task);
+        $user = $this->getUser()->getRoles();
             $em = $this->getDoctrine()->getManager();
             $em->remove($task);
             $em->flush();
-
             $this->addFlash('success', 'La tâche a bien été supprimée.');
-
             return $this->redirectToRoute('homepage');
-        }
-        else{
-
-            $this->addFlash('error', 'Vous ne pouvez pas supprimer une tâche qui n\'est pas a vous');
-            return $this->redirectToRoute('homepage');
-        }
     }
 }
