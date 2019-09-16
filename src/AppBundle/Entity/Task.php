@@ -30,6 +30,12 @@ class Task
     private $title;
 
     /**
+     * @ORM\Column(type="string", length=60, nullable=true)
+     * @Assert\NotBlank(message="Vous devez saisir un autheur.")
+     */
+    private $author;
+
+    /**
      * @ORM\Column(type="text")
      * @Assert\NotBlank(message="Vous devez saisir du contenu.")
      */
@@ -107,5 +113,14 @@ class Task
         $this->users = $users;
 
         return $this;
+    }
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+
+    public function setAuthor($author)
+    {
+        $this->author = $author;
     }
 }
