@@ -50,7 +50,6 @@
             $form = $crawler->selectButton('Modifier')->form();
             $form['task[title]'] = 'le petit magazine';
             $form['task[content]'] = 'Voici le début de la programmation de mon petit journal';
-            $form['task[author]'] = 'moi';
             $this->client->submit($form);
             $crawler = $this->client->followRedirect();
             $user = $this->find('isidro');
