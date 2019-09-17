@@ -19,7 +19,7 @@ class TaskType extends AbstractType
                 ->add('content', TextareaType::class)
                 ->add('title')
                 ->add('content', TextareaType::class);
-            if ($action[0] != 'creat' & $action[1] != null || $action[0] != 'edit') {
+            if ($action[0] == 'creat' & $action[1] != null || $action[0] != 'edit') {
                 $form ->add('author', TextareaType::class, [
                     'label' => 'autheur']);
             }
