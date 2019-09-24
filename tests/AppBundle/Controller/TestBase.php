@@ -28,10 +28,10 @@
 
         public function randoomRole()
         {
-            $random = rand(0,1);
-            if ($random === 0){
+            $random = rand(0, 1);
+            if ($random === 0) {
                 $this->roles = ['ROLE_ADMIN'];
-            }else{
+            } else {
                 $this->roles = ['ROLE_USER'];
             }
         }
@@ -129,7 +129,7 @@
             $this->doctrine->getManager()->flush();
         }
 
-        public function user($name,$mail)
+        public function user($name, $mail)
         {
             $user = new User();
             $password =  $this->container->get('security.password_encoder');

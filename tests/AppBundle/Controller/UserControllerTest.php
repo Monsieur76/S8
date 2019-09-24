@@ -19,16 +19,18 @@
             $crawler = $this->client->followRedirect();
             $this->assertSame(1, $crawler->filter('div.alert.alert-success')->count());
             $user = $this->find($this->getUserName());
-            $this->assertEquals($this->getUserName(),$user->getUsername());
+            $this->assertEquals($this->getUserName(), $user->getUsername());
             $this->remove($user);
         }
 
         public function testListActionAndEdit()
         {
-            $user = $this->user('diana','az@ez6.fr');
+            $user = $this->user('diana', 'az@ez6.fr');
             $crawler = $this->connection('diana');
-            $this->assertContains('Bienvenue sur Todo List, l\'application vous permettant de gérer l\'ensemble de vos tâches sans effort !',
-                $crawler->filter('body > div:nth-child(2) > div:nth-child(2) > div > h1')->text());
+            $this->assertContains(
+                'Bienvenue sur Todo List, l\'application vous permettant de gérer l\'ensemble de vos tâches sans effort !',
+                $crawler->filter('body > div:nth-child(2) > div:nth-child(2) > div > h1')->text()
+            );
             $link = $crawler->selectLink('Liste des Utilisateurs')->link();
             $this->client->click($link);
             $this->assertEquals(200, $this->client->getResponse()->getStatusCode());

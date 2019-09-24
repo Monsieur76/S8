@@ -26,7 +26,7 @@
 
         public function testCreatTask()
         {
-            $this->user('urban','az@ez2.fr');
+            $this->user('urban', 'az@ez2.fr');
             $this->connection('urban');
             $crawler = $this->creatTask();
             $this->assertSame(1, $crawler->filter('div.alert.alert-success')->count());
@@ -39,7 +39,7 @@
 
         public function testEditTask()
         {
-            $user = $this->user('isidro','az@ez3.fr');
+            $user = $this->user('isidro', 'az@ez3.fr');
             $this->connection('isidro');
             $crawler = $this->creatTask();
             $this->assertSame(1, $crawler->filter('div.alert.alert-success')->count());
@@ -59,7 +59,7 @@
 
         public function testDeleteTask()
         {
-            $user = $this->user('lee','az@ez4.fr');
+            $user = $this->user('lee', 'az@ez4.fr');
             $this->connection('lee');
             $crawler = $this->creatTask();
             $this->assertSame(1, $crawler->filter('div.alert.alert-success')->count());
@@ -74,7 +74,7 @@
 
         public function testToggleTrue()
         {
-            $this->user('rolfson','az@ez9.fr');
+            $this->user('rolfson', 'az@ez9.fr');
             $this->connection('rolfson');
             $crawler = $this->creatTask();
             $this->assertSame(1, $crawler->filter('div.alert.alert-success')->count());
@@ -90,7 +90,7 @@
 
         public function testToggleFalse()
         {
-            $this->user('jesus','az@ez11.fr');
+            $this->user('jesus', 'az@ez11.fr');
             $this->connection('rolfson');
             $crawler = $this->creatTask();
             $this->assertSame(1, $crawler->filter('div.alert.alert-success')->count());
