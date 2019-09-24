@@ -12,24 +12,14 @@
      * @method Task[]    findAll()
      * @method Task[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
      */
+
     class TaskRepository extends ServiceEntityRepository
     {
-        public $task;
-        public function __construct(Task $task)
-        {
-            $this->task = $task;
-        }
-        /**
-         * Our custom method
-         *
-         * @return Task[]
-         */
-        public function findPostsByAuthor($done): array
-        {
-            return $this->findBy([
-                'isDone' => $done
-            ]);
-        }
+        private $em;
 
-
+        public function __construct(RegistryInterface $registry, ObjectManager $em)
+        {
+            parent::__construct($registry, Task::class);
+            $this->em = $em;
+        }
     }

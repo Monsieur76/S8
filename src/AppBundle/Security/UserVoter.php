@@ -11,21 +11,20 @@ namespace AppBundle\Security;
     {
         protected function supports($attribute, $subject)
         {
-            return in_array($attribute,['EDIT','DELETE']) && $subject instanceof Task;
+            return in_array($attribute, ['EDIT','DELETE']) && $subject instanceof Task;
         }
-        protected function voteOnAttribute($attribute, $task,TokenInterface  $token)
+        protected function voteOnAttribute($attribute, $task, TokenInterface  $token)
         {
             $user = $token->getUser();
             if (!$user instanceof UserInterface) {
-               return false;
+                return false;
             }
-            if ($task->getUser()->getId() == null)
-            {
-                return $user->getRoles() == ['ROLE_ADMIN'];
+            if ($task->getUser()->getId() == null && $user->getRoles() == ['ROLE_ADMIN']) {
+                return true;
             }
-            switch ($attribute){
-                case 'EDIT' || 'DELETE':
-                    return $task->getUser()->getId() == $user->getId();
+            switch ($attribute) {
+                case 'EDIT' || 'DELETE' && $task->getUser()->getId() == $user->getId():
+                    return true;
                     break;
             }
             return false;

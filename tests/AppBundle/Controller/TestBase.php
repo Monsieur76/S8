@@ -3,6 +3,7 @@
 
     namespace Tests\AppBundle\Controller;
 
+    use AppBundle\Entity\Task;
     use AppBundle\Entity\User;
     use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -108,6 +109,18 @@
         {
             $user = $this->doctrine->getRepository(User::class)->findOneBy(['username'=>$name]);
             return $user;
+        }
+
+        public function findAllUser()
+        {
+            $user = $this->doctrine->getRepository(User::class)->findAll();
+            return $user;
+        }
+
+        public function findAllTask()
+        {
+            $task = $this->doctrine->getRepository(Task::class)->findAll();
+            return $task;
         }
 
         public function persistFlush($user)

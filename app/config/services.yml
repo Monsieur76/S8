@@ -1,9 +1,12 @@
+parameters:
+    container.autowiring.strict_mode: true
+
 services:
   # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
-        public: false       # Allows optimizing the container by removing unused services; this also means
+        public: true      # Allows optimizing the container by removing unused services; this also means
 
     user_voter:
         class: AppBundle\Security\UserVoter
@@ -13,3 +16,25 @@ services:
     AppBundle\DataFixtures\:
         resource: '../../src/AppBundle/DataFixtures'
         tags: ['doctrine.fixture.orm']
+
+    AppBundle\Repository\TaskRepository:
+
+    AppBundle\Repository\UserRepository:
+
+    AppBundle\Controller\TaskController:
+        autowire: true
+        tags: ['controller.service_arguments']
+
+    AppBundle\Controller\UserController:
+        tags: ['controller.service_arguments']
+
+    Symfony\Component\Security\Core\Encoder:
+        autowire: true
+
+#    AppBundle\:
+#        ressource: '.../src/*'
+#        exclude: '.../src/{DependencyInjection,Entity,Migration,Tests,Kernel.php}'
+#
+#    AppBundle\Controller\:
+#        ressource: '.../src/Controller'
+#        tags: ['controller.service_arguments']

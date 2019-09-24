@@ -14,15 +14,6 @@ class DefaultControllerTest extends TestBase
         $this->client->click($link);
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
     }
-    public function testIndexUser()
-    {
-        $user = $this->user('paul','az@ez1.fr');
-        $crawler = $this->connection('paul');
-        $link = $crawler->selectLink('Créer un utilisateur')->link();
-        $this->client->click($link);
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
-        $this->remove($user);
-    }
 
     public function testIndexConnect()
     {

@@ -15,3 +15,5 @@ Before proposing a pull request, check the following:
 * Watch the project on GitHub, and please comment on issues or PRs regarding the feature you contributed.
 
 Thank you for your contribution! ToDo wouldn't be so great without you.
+
+[Readme](https://github.com/Monsieur76/S8/blob/master/README.md)

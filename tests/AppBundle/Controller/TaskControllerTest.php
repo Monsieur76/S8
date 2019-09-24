@@ -8,7 +8,7 @@
     {
         public function testListAction()
         {
-            $crawler = $this->client->request('GET', '/tasks');
+            $crawler = $this->client->request('GET', '/tasks/');
             $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
         }
 

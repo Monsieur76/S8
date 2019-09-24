@@ -17,8 +17,10 @@
     {
         private $em;
 
-        public function __construct(RegistryInterface $registry,ObjectManager $em)
-        {
+        public function __construct(
+            RegistryInterface $registry,
+            ObjectManager $em
+        ) {
             parent::__construct($registry, User::class);
             $this->em = $em;
         }

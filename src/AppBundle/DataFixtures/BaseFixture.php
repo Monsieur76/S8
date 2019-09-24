@@ -3,7 +3,6 @@
 
     namespace AppBundle\DataFixtures;
 
-
     use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
     use Doctrine\Common\Persistence\ObjectManager;
     use Faker;
@@ -22,9 +21,9 @@
 
         public function __construct(
             UserPasswordEncoderInterface $encoder,
-            TokenGeneratorInterface $token ,
+            TokenGeneratorInterface $token,
             ObjectManager $manager
-        ){
+        ) {
             $this->faker = Faker\Factory::create('fr_FR');
             $this->encoder = $encoder;
             $this->token = $token;
@@ -33,20 +32,20 @@
 
         public function randoomRole()
         {
-            $random = rand(0,1);
-            if ($random === 0){
+            $random = rand(0, 1);
+            if ($random === 0) {
                 $roles = ['ROLE_ADMIN'];
-            }else{
+            } else {
                 $roles = ['ROLE_USER'];
             }
             return $roles;
         }
 
-        protected function createMany($reference,string $className, int $count, callable $factory)
+        protected function createMany($reference, string $className, int $count, callable $factory)
         {
             for ($i = 1; $i < $count; $i++) {
                 $entity = new $className();
-                $factory($entity,$i);
+                $factory($entity, $i);
                 $this->manager->persist($entity);
                 $this->addReference($reference.$i, $entity);
                 $this->manager->flush();
