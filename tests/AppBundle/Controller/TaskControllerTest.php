@@ -32,9 +32,7 @@
             $this->assertSame(1, $crawler->filter('div.alert.alert-success')->count());
             $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
             $task = $this->doctrine->getRepository(Task::class)->findOneBy(['title'=> 'le petit journal' ]);
-            $user = $this->find('urban');
             $this->remove($task);
-            $this->remove($user);
         }
 
         public function testEditTask()
@@ -52,9 +50,7 @@
             $form['task[content]'] = 'Voici le début de la programmation de mon petit journal';
             $this->client->submit($form);
             $crawler = $this->client->followRedirect();
-            $user = $this->find('isidro');
             $this->remove($task);
-            $this->remove($user);
         }
 
         public function testDeleteTask()
@@ -67,9 +63,7 @@
             $task = $this->doctrine->getRepository(Task::class)->findOneBy(['title'=> 'le petit journal' ]);
             $crawler = $this->client->request('GET', '/tasks/'.$task->getId().'/delete');
             $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
-            $user = $this->find('lee');
             $this->remove($task);
-            $this->remove($user);
         }
 
         public function testToggleTrue()
@@ -83,9 +77,7 @@
             $crawler = $this->client->request('GET', '/tasks/'.$task->getId().'/toggle');
             $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
             $task = $this->doctrine->getRepository(Task::class)->findOneBy(['title'=> 'le petit journal' ]);
-            $user = $this->find('rolfson');
             $this->remove($task);
-            $this->remove($user);
         }
 
         public function testToggleFalse()
@@ -100,8 +92,25 @@
             $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
             $crawler = $this->client->request('GET', '/tasks/'.$task->getId().'/toggle');
             $task = $this->doctrine->getRepository(Task::class)->findOneBy(['title'=> 'le petit journal' ]);
-            $user = $this->find('jesus');
             $this->remove($task);
-            $this->remove($user);
+        }
+
+        public function tearDown()
+        {
+            if ($user = $this->find('urban')) {
+                $this->remove($user);
+            }
+            if ($user = $this->find('isidro')) {
+                $this->remove($user);
+            }
+            if ($user = $this->find('lee')) {
+                $this->remove($user);
+            }
+            if ($user = $this->find('rolfson')) {
+                $this->remove($user);
+            }
+            if ($user = $this->find('jesus')) {
+                $this->remove($user);
+            }
         }
     }

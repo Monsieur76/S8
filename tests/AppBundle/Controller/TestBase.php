@@ -123,6 +123,12 @@
             return $task;
         }
 
+        public function findOneBy($title)
+        {
+            $task = $this->doctrine->getRepository(Task::class)->findOneBy(['title'=> $title ]);
+            return $task;
+        }
+
         public function persistFlush($user)
         {
             $this->doctrine->getManager()->persist($user);
