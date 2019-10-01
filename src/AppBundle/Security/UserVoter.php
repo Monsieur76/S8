@@ -20,11 +20,11 @@ namespace AppBundle\Security;
                 return false;
             }
             if ($task->getUser()->getId() == null && $user->getRoles() == ['ROLE_ADMIN']) {
-                return true;
+                return $task->getUser()->getId() == null;
             }
             switch ($attribute) {
                 case 'EDIT' || 'DELETE' && $task->getUser()->getId() == $user->getId():
-                    return true;
+                    return $task->getUser()->getId()== $user->getId();
                     break;
             }
             return false;
