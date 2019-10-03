@@ -26,18 +26,33 @@ class Task
     /**
      * @ORM\Column(type="string")
      * @Assert\NotBlank(message="Vous devez saisir un titre.")
+     *  * @Assert\Length(
+     *     min=3,
+     *     max=255,
+     *      minMessage="Le champ titre doit au moin {{limit}} caractères de long",
+     *     maxMessage="Le champ titre ne peut pas contenir plus de {{limit}} caractères")
      */
     private $title;
 
     /**
      * @ORM\Column(type="string", length=60, nullable=true)
      * @Assert\NotBlank(message="Vous devez saisir un autheur.")
+     *  * @Assert\Length(
+     *     min=3,
+     *     max=255,
+     *      minMessage="Le champ autheur doit au moin {{limit}} caractères de long",
+     *     maxMessage="Le champ autheur ne peut pas contenir plus de {{limit}} caractères")
      */
     private $author;
 
     /**
      * @ORM\Column(type="text")
      * @Assert\NotBlank(message="Vous devez saisir du contenu.")
+     *  * @Assert\Length(
+     *     min=3,
+     *     max=255,
+     *      minMessage="Le champ contenue doit au moin {{limit}} caractères de long",
+     *     maxMessage="Le champ contenue ne peut pas contenir plus de {{limit}} caractères")
      */
     private $content;
 

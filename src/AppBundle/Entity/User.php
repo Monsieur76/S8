@@ -26,6 +26,11 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=50, unique=true)
      * @Assert\NotBlank(message="Vous devez saisir un nom d'utilisateur.")
+     * @Assert\Length(
+     *     min=3,
+     *     max=255,
+     *      minMessage="Le champ username doit au moin {{limit}} caractères de long",
+     *     maxMessage="Le champ username ne peut pas contenir plus de {{limit}} caractères")
      */
     private $username;
 
@@ -35,7 +40,13 @@ class User implements UserInterface
     private $roles = [];
 
     /**
+     * @Assert\NotBlank()
      * @ORM\Column(type="string", length=64)
+     *  * @Assert\Length(
+     *     min=3,
+     *     max=255,
+     *      minMessage="Le champ password doit au moin {{limit}} caractères de long",
+     *     maxMessage="Le champ password ne peut pas contenir plus de {{limit}} caractères")
      */
     private $password;
 
@@ -107,6 +118,7 @@ class User implements UserInterface
     public function eraseCredentials()
     {
     }
+
     public function getTask(): Collection
     {
         return $this->task;

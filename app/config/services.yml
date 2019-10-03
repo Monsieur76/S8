@@ -30,11 +30,3 @@ services:
 
     Symfony\Component\Security\Core\Encoder:
         autowire: true
-
-#    AppBundle\:
-#        ressource: '.../src/*'
-#        exclude: '.../src/{DependencyInjection,Entity,Migration,Tests,Kernel.php}'
-#
-#    AppBundle\Controller\:
-#        ressource: '.../src/Controller'
-#        tags: ['controller.service_arguments']
