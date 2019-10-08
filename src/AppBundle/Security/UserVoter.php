@@ -23,8 +23,10 @@ namespace AppBundle\Security;
                 return true;
             }
             switch ($attribute) {
-                case 'EDIT' || 'DELETE' && $task->getUser()->getId() == $user->getId():
-                    return $task->getUser()->getId()== $user->getId();
+                case 'EDIT' || 'DELETE':
+                    if ($task->getUser()->getId()== $user->getId()) {
+                        return true;
+                    }
                     break;
             }
             return false;

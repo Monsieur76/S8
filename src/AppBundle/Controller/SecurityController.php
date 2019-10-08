@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 class SecurityController extends AbstractController
 {
@@ -27,9 +28,8 @@ class SecurityController extends AbstractController
     /**
      * @Route("/login_check", name="login_check")
      */
-    public function loginCheck()
+    public function loginCheck(TokenInterface $token)
     {
-        // This code is never executed.
     }
 
     /**
